@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Exams Platform</title>
+
+<style>
+:root{
+    --main:#1e293b;
+    --accent:#3b82f6;
+    --bg:#f1f5f9;
+    --card:#ffffff;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Segoe UI,Tahoma, sans-serif;
+    background:var(--bg);
+    color:#111;
+    overflow-x: hidden;
+}
+
+/* Navigation - متجاوب */
+nav{
+    background:var(--main);
+    color:#fff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+nav h2{
+    margin:0;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+}
+nav div{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+nav a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.3s;
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+}
+nav a:hover{
+    background: rgba(255,255,255,0.1);
+}
+
+/* Container - متجاوب */
+.container{
+    max-width:900px;
+    margin:auto;
+    padding: clamp(15px, 4vw, 30px);
+    width: 100%;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+/* Card - متجاوب */
+.card{
+    background:var(--card);
+    padding: clamp(15px, 4vw, 25px);
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+    margin-bottom:20px;
+}
+
+/* Buttons - متجاوب */
+button{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding: clamp(10px, 2vw, 12px) clamp(15px, 3vw, 20px);
+    border-radius:10px;
+    cursor:pointer;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    transition: 0.3s;
+    width: 100%;
+    max-width: 200px;
+}
+button:hover{ 
+    opacity: 0.9; 
+    transform: translateY(-2px); 
+}
+button.secondary{
+    background:#64748b;
+}
+
+/* Options - متجاوب */
+.option{
+    background:#e5e7eb;
+    padding: clamp(10px, 2.5vw, 12px);
+    border-radius:10px;
+    margin:10px 0;
+    cursor:pointer;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    transition: all 0.2s;
+}
+.option:hover{
+    background:#d1d5db;
+}
+.option.selected{
+    background:#bfdbfe;
+    border: 2px solid var(--accent);
+}
+
+/* Navigation buttons - متجاوب */
+.nav-btns{
+    display:flex;
+    justify-content:space-between;
+    gap: 10px;
+    margin-top:20px;
+    flex-wrap: wrap;
+}
+.nav-btns button{
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Score display - متجاوب */
+.big-score{
+    font-size: clamp(2rem, 8vw, 2.5rem);
+    font-weight:bold;
+    color:var(--accent);
+}
+.center{text-align:center}
+
+/* Exam buttons - متجاوب */
+.exam-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+    padding: clamp(12px, 3vw, 15px);
+    max-width: 100%;
+}
+.exam-btn span{
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+/* Home page buttons */
+.home-buttons{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+.home-buttons button{
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Question text - متجاوب */
+#qText{
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    margin: 15px 0;
+}
+
+#examTitle{
+    color:var(--accent);
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    margin-bottom: 15px;
+}
+
+/* Review section - متجاوب */
+.review-item{
+    margin:20px 0;
+    padding: clamp(12px, 3vw, 15px);
+    border-radius:12px;
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+}
+
+/* Scores list - متجاوب */
+.score-item{
+    border-bottom:1px solid #eee;
+    padding:10px 0;
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+}
+.score-item small{
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+}
+
+/* Media Queries للتأكد من التوافق */
+@media (max-width: 600px) {
+    nav{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    nav div{
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .nav-btns{
+        flex-direction: column;
+    }
+    
+    .nav-btns button{
+        max-width: 100%;
+    }
+    
+    .home-buttons{
+        flex-direction: column;
+    }
+    
+    .home-buttons button{
+        max-width: 100%;
+    }
+    
+    .exam-btn{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .container{
+        padding: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>📚 English Exams</h2>
+    <div>
+        <a href="#" onclick="showPage('home')">🏠 Home</a>
+        <a href="#" onclick="showPage('exams')">📝 Exams</a>
+        <a href="#" onclick="showPage('scores')">📊 Scores</a>
+    </div>
+</nav>
+
+<div class="container">
+
+<div class="page active" id="home">
+    <div class="card center">
+        <h1>Welcome 👋</h1>
+        <p>Practice English exams and track your progress.</p>
+        <div class="home-buttons">
+            <button onclick="showPage('exams')">Go to Exams</button>
+            <button class="secondary" onclick="showPage('scores')">View Scores</button>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="exams">
+    <div class="card">
+        <h2>Available Exams</h2>
+        <div id="examsList"></div>
+    </div>
+</div>
+
+<div class="page" id="examPage">
+    <div class="card">
+        <h2 id="examTitle"></h2>
+        <h3 id="qText"></h3>
+        <div id="options"></div>
+
+        <div class="nav-btns">
+            <button class="secondary" onclick="prev()">⬅ Previous</button>
+            <button id="nextBtn" onclick="next()">Next ➡</button>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="result">
+    <div class="card">
+        <h2 class="center">Exam Result</h2>
+        <div class="big-score center" id="scoreText"></div>
+        <p class="center" id="details"></p>
+
+        <div id="review"></div>
+
+        <div class="center">
+            <button onclick="showPage('exams')">Back to Exams</button>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="scores">
+    <div class="card">
+        <h2>Your Scores 📊</h2>
+        <div id="scoreList"></div>
+        <button class="secondary" onclick="clearScores()" style="margin-top:20px; font-size:0.85rem;">🗑️ Clear History</button>
+    </div>
+</div>
+
+</div>
+
+<script>
+const allExams = {
+    "The Ice Hotel": [
+        {q:"What does 'freezing' mean?", o:["Very warm", "Extremely cold", "Cool", "Hot"], c:1},
+        {q:"'Surprisingly' is used when something is:", o:["Expected", "Boring", "Unexpected", "Normal"], c:2},
+        {q:"If something is 'unique', it means it is:", o:["The only one of its kind", "Very common", "Cheap", "Old"], c:0},
+        {q:"The word 'fantastic' has the same meaning as:", o:["Bad", "Great", "Small", "Usual"], c:1},
+        {q:"'Unusual' means:", o:["Typical", "Not common", "Easy", "Fast"], c:1},
+        {q:"Where is the Ice Hotel located?", o:["Paris, France", "Quebec, Canada", "London, UK", "New York, USA"], c:1},
+        {q:"When is the hotel built every year?", o:["June", "September", "December", "March"], c:2},
+        {q:"How many people can stay in the hotel each night?", o:["32", "50", "80", "100"], c:2},
+        {q:"Which of these is NOT in the hotel?", o:["Art gallery", "Church", "Movie theater", "Gym"], c:3},
+        {q:"What are the plates and glasses made of?", o:["Wood", "Plastic", "Ice", "Glass"], c:2},
+        {q:"Why do some couples go to the hotel's church?", o:["To sleep", "To get married", "To eat", "To watch movies"], c:1},
+        {q:"The temperature inside the hotel is always between:", o:["0 and 5", "-2 and -5", "-10 and -20", "5 and 10"], c:1},
+        {q:"What keeps the guests warm at night?", o:["Electric heaters", "Fur blankets and special sleeping bags", "Hot water", "Thick coats"], c:1},
+        {q:"If you are 'into' something, you:", o:["Hate it", "Are interested in it", "Are afraid of it", "Forget it"], c:1},
+        {q:"'Check in' at a hotel means to:", o:["Leave the hotel", "Pay the bill", "Register and get the key", "Clean the room"], c:2},
+        {q:"We use 'made of' when the material is:", o:["Changed completely", "Still clear and recognizable", "Liquid", "Invisible"], c:1},
+        {q:"Choose: All of the furniture ___ made of ice.", o:["is", "are", "was", "be"], c:0},
+        {q:"Choose: ___ you into skiing?", o:["Is", "Are", "Do", "Does"], c:1},
+        {q:"A sentence must start with a ____ letter.", o:["Small", "Capital", "Italic", "Bold"], c:1},
+        {q:"Complete: This amazing hotel ____ built every December.", o:["is", "are", "were", "be"], c:0}
+    ],
+    "Food Firsts": [
+        {q:"The word 'wealthy' means:", o:["Poor", "Rich", "Healthy", "Famous"], c:1},
+        {q:"'Reality' means:", o:["A dream", "What is fact or true", "A lie", "The future"], c:1},
+        {q:"What do we call things used to flavor food like pepper?", o:["Dishes", "Spices", "Fruits", "Sweets"], c:1},
+        {q:"A 'sailor' is a person who works on a:", o:["Plane", "Ship", "Train", "Farm"], c:1},
+        {q:"Where was pizza probably first made?", o:["Italy", "Persia", "America", "England"], c:1},
+        {q:"In 1377, the word 'curry' was first found in an English ____.", o:["map", "cookbook", "story", "diary"], c:1},
+        {q:"The Persians ate flat bread with cheese in the ____.", o:["1300s", "1600s", "500s", "1800s"], c:2},
+        {q:"Where did pizza 'catch on' nearly 1,000 years later?", o:["London", "Hamburg", "Naples", "Tehran"], c:2},
+        {q:"Who introduced hamburgers to Americans?", o:["Persian soldiers", "German sailors", "English families", "Italian chefs"], c:1},
+        {q:"What does the phrasal verb 'find out' mean?", o:["To lose", "To learn or discover", "To go out", "To forget"], c:1},
+        {q:"If a fashion 'catches on', it becomes ____.", o:["Old", "Popular", "Expensive", "Hated"], c:1},
+        {q:"The expression 'dig in' means to start ____.", o:["digging", "eating", "sleeping", "talking"], c:1},
+        {q:"According to some stories, hamburgers ____ from Hamburg, Germany.", o:["came", "comes", "coming", "come"], c:0},
+        {q:"Wealthy people used spices because they ____ expensive.", o:["is", "was", "were", "be"], c:2},
+        {q:"The first hamburger ____ made in 1891.", o:["is", "was", "were", "are"], c:1},
+        {q:"British ships ____ to India in the 1600s.", o:["travel", "travels", "traveled", "traveling"], c:2},
+        {q:"What is more important than where food comes from?", o:["The price", "The name", "How it tastes", "The color"], c:2},
+        {q:"Grammar: Cooks of wealthy English families ____ curry dishes.", o:["were making", "were made", "was making", "was made"], c:0},
+        {q:"Grammar: The Persians ____ round, flat bread with cheese in the 500s.", o:["were eating", "were eaten", "was eating", "was eaten"], c:0}
+    ],
+    "Hurricane Who?": [
+        {q:"What are tropical cyclones called in Asia?", o:["Hurricanes", "Typhoons", "Tornadoes", "Floods"], c:1},
+        {q:"Where is the Tropical Prediction Center located?", o:["New York", "London", "Miami, Florida", "Tokyo"], c:2},
+        {q:"In the northern part of the world, storms turn to the:", o:["Right", "Left", "North", "South"], c:1},
+        {q:"Who decides what names will be used for hurricanes?", o:["Local people", "The WMO", "NASA", "The news"], c:1},
+        {q:"Which letters are NOT used for hurricane names?", o:["A, B, C", "Q, U, X, Y, Z", "M, N, O", "F, G, H"], c:1},
+        {q:"Asian countries mostly use names of ____ for storms.", o:["Famous people", "Flowers and animals", "City names", "Planets"], c:1},
+        {q:"The word 'meteorologist' means a person who studies:", o:["Animals", "The weather", "History", "Stars"], c:1},
+        {q:"The idiom 'keep an eye out for' means to:", o:["Close your eyes", "Watch for danger", "Sleep", "Ignore"], c:1},
+        {q:"The idiom 'keep up with' means to:", o:["Stop", "Continue getting information", "Fall behind", "Run fast"], c:1},
+        {q:"The idiom 'make up' means to:", o:["Break", "Prepare or create", "Lose", "Forget"], c:1},
+        {q:"Grammar: Tropical cyclones ____ typhoons in Asia.", o:["called", "are called", "is called", "calling"], c:1},
+        {q:"Grammar: The WMO decides what names will ____.", o:["use", "be used", "using", "be use"], c:1},
+        {q:"Grammar: In the US, hurricanes ____ names by meteorologists.", o:["give", "are given", "is given", "giving"], c:1},
+        {q:"Grammar: The name lists ____ with the English alphabet.", o:["is made", "are made", "make", "making"], c:1},
+        {q:"The word 'tropical' refers to places that are:", o:["Cold", "Always warm", "Very dry", "Full of ice"], c:1},
+        {q:"A 'prediction' is a smart guess about the:", o:["Past", "Present", "Future", "Weather only"], c:2},
+        {q:"'International' means in or from:", o:["One country", "Different countries", "Local areas", "Small towns"], c:1},
+        {q:"'Alphabetical order' means starting from:", o:["Z to A", "1 to 10", "A to Z", "Small to Large"], c:2},
+        {q:"Why are hurricanes given names?", o:["To make them famous", "To make it easier to follow information", "To scare people", "To make them pretty"], c:1}
+    ],
+    "How Did Those Get in There?": [
+        {q:"How does the actress feel before going on stage?", o:["Happy", "Nervous", "Angry", "Bored"], c:1},
+        {q:"What does 'butterflies in my stomach' mean?", o:["Feeling hungry", "Feeling nervous", "Eating insects", "Feeling sick"], c:1},
+        {q:"Which chemical is produced by the body under stress?", o:["Sugar", "Cortisol", "Oxygen", "Water"], c:1},
+        {q:"In normal situations, cortisol helps the body start activities in the:", o:["Evening", "Morning", "Night", "Afternoon"], c:1},
+        {q:"For some people, cortisol ____ the stomach to produce the 'funny' feeling.", o:["Speeds up", "Shuts down", "Cleans", "Warms"], c:1},
+        {q:"For other people, cortisol speeds up the stomach, making them feel:", o:["Strong", "Sick", "Happy", "Calm"], c:1},
+        {q:"To get rid of 'butterflies', you just need to:", o:["Eat more", "Relax", "Run", "Sleep"], c:1},
+        {q:"What can help reduce stress according to the text?", o:["Staying alone", "Talking to others", "Crying", "Sleeping"], c:1},
+        {q:"The word 'stressful' describes a situation that makes you:", o:["Relaxed", "Tense and worried", "Excited", "Bored"], c:1},
+        {q:"'Benefit' means that something is:", o:["Harmful", "Helpful or good", "Old", "Slow"], c:1},
+        {q:"The word 'produce' means to:", o:["Destroy", "Make or create", "Buy", "Hide"], c:1},
+        {q:"'Respond' means to:", o:["Ignore", "React to something", "Sleep", "Leave"], c:1},
+        {q:"The idiom 'shut down' means to:", o:["Work faster", "Stop working", "Start again", "Open"], c:1},
+        {q:"'Get rid of' means to:", o:["Keep", "Remove/Free yourself from", "Find", "Buy"], c:1},
+        {q:"Grammar: Extra cortisol makes these people ____ sick.", o:["feel", "to feel", "feeling", "feels"], c:0},
+        {q:"Grammar: Stepping out onto the stage helps the butterflies ____ away.", o:["fly", "flying", "flies", "to fly"], c:0},
+        {q:"Grammar: My teacher made me ____ the lesson again.", o:["write", "to write", "writing", "writes"], c:0},
+        {q:"Grammar: She helps her brother ____ his homework.", o:["do", "doing", "does", "to do"], c:0},
+        {q:"Cortisol helps the body respond well to healthy ____.", o:["Sleep", "Exercise", "Food", "Games"], c:1},
+        {q:"The 'butterflies' fly away when the actress ____.", o:["Eats", "Steps out onto the stage", "Sleeps", "Whispers"], c:1},
+        {q:"The word 'situation' means a set of ____.", o:["Words", "Circumstances/Events", "Numbers", "Colors"], c:1},
+        {q:"'Play a role in' means to be ____ of something.", o:["Afraid", "A part", "Outside", "In front"], c:1}
+    ],
+    "Comprehensive Exam (Lessons 1-4)": [
+        {q: "Why is the Ice Hotel built every year in December?", o: ["Because it's cheap", "Because the ice melts in spring", "Because there are no guests", "Because it's a rule"], c: 1},
+        {q: "The word 'Unique' means:", o: ["Very cold", "One of a kind", "Large", "Boring"], c: 1},
+        {q: "How many people can stay in the Ice Hotel each night?", o: ["32", "50", "80", "100"], c: 2},
+        {q: "What keeps guests warm at night in the hotel?", o: ["Heaters", "Fur blankets and special sleeping bags", "Hot water", "Fireplaces"], c: 1},
+        {q: "The temperature inside the Ice Hotel is between:", o: ["0 and 5", "-2 and -5", "-10 and -20", "5 and 10"], c: 1},
+        {q: "Where was pizza probably first made in the 500s?", o: ["Italy", "Persia", "Germany", "England"], c: 1},
+        {q: "In 1377, the word 'curry' was first found in an English ____.", o: ["map", "cookbook", "story", "diary"], c: 1},
+        {q: "Grammar: Cooks of wealthy English families ____ curry dishes.", o: ["were making", "were made", "was making", "making"], c: 0},
+        {q: "Grammar: The Persians ____ round, flat bread with cheese in the 500s.", o: ["were eating", "were eaten", "was eating", "eating"], c: 0},
+        {q: "Who introduced hamburgers to Americans?", o: ["Persian soldiers", "German sailors", "English families", "Italian chefs"], c: 1},
+        {q: "The idiom 'catch on' means:", o: ["To catch a ball", "To become popular", "To discover", "To start eating"], c: 1},
+        {q: "The idiom 'find out' means:", o: ["To go out", "To learn or discover", "To lose something", "To cook"], c: 1},
+        {q: "What are tropical cyclones called in Asia?", o: ["Hurricanes", "Typhoons", "Tornadoes", "Floods"], c: 1},
+        {q: "Grammar: Tropical cyclones ____ typhoons in Asia.", o: ["called", "are called", "is called", "calling"], c: 1},
+        {q: "Grammar: The WMO decides what names will ____.", o: ["use", "be used", "using", "be use"], c: 1},
+        {q: "The organization that decides hurricane names is the:", o: ["NASA", "WMO", "FBI", "UNO"], c: 1},
+        {q: "Which letters are NOT used to start hurricane names?", o: ["A, B, C", "Q, U, X, Y, Z", "M, N, O", "S, T, V"], c: 1},
+        {q: "The idiom 'keep an eye out for' means:", o: ["To close eyes", "To watch carefully for danger", "To sleep", "To ignore"], c: 1},
+        {q: "In the northern part of the world, storms turn to the:", o: ["Right", "Left", "North", "South"], c: 1},
+        {q: "What chemical does the body produce under stress?", o: ["Sugar", "Cortisol", "Oxygen", "Water"], c: 1},
+        {q: "Grammar: Extra cortisol makes these people ____ sick.", o: ["feel", "to feel", "feeling", "feels"], c: 0},
+        {q: "Grammar: Stepping out onto the stage helps the butterflies ____ away.", o: ["fly", "flying", "to fly", "flies"], c: 0},
+        {q: "For some people, cortisol ____ the stomach, causing 'butterflies'.", o: ["Speeds up", "Shuts down", "Cleans", "Heats"], c: 1},
+        {q: "The idiom 'get butterflies in the stomach' means:", o: ["To feel hungry", "To feel nervous", "To eat insects", "To feel sick"], c: 1},
+        {q: "The idiom 'get rid of' means:", o: ["To keep", "To remove or eliminate", "To find", "To buy"], c: 1},
+        {q: "How can talking to others help with stress?", o: ["It increases it", "It can help reduce it", "It has no effect", "It makes you more nervous"], c: 1},
+        {q: "The word 'meteorologist' means a person who studies:", o: ["Animals", "The weather", "History", "Stars"], c: 1},
+        {q: "Wealthy people used spices because they were ____.", o: ["Cheap", "Rich", "Expensive", "Bad"], c: 2},
+        {q: "Which idiom means to be a part of something?", o: ["Shut down", "Play a role in", "Get rid of", "Catch on"], c: 1},
+        {q: "In the Ice Hotel, everything including plates is made of:", o: ["Plastic", "Glass", "Ice", "Wood"], c: 2}
+    ],
+    "Idioms and expressions ": [
+        {q: "What is the meaning of 'A-1'?", o: ["Excellent, superior", "Very old", "Broken", "Small"], c: 0},
+        {q: "Her mother is teaching her the 'A B C' of cooking. 'A B C' means:", o: ["History", "Basics/Fundamentals", "Recipes", "End"], c: 1},
+        {q: "The train was 'about to' leave. 'About to' means:", o: ["Already left", "Prepared/Ready to", "Never leaving", "Late"], c: 1},
+        {q: "'Above all', never mention it to anyone. 'Above all' means:", o: ["Below everything", "Especially/Mainly", "Sometimes", "Never"], c: 1},
+        {q: "An 'Act of God' refers to:", o: ["Human mistake", "Natural occurrence/disaster", "Scientific plan", "Police work"], c: 1},
+        {q: "He is a man 'after my own heart'. This means he has:", o: ["A heart disease", "Similar interests", "Different ideas", "No money"], c: 1},
+        {q: "It goes 'against the grain' to lend them money. 'Against the grain' means:", o: ["Easy", "Annoying/Irritating", "Helpful", "Fast"], c: 1},
+        {q: "We knew 'all along' that he would succeed. 'All along' means:", o: ["From the beginning", "At the end", "Suddenly", "Rarely"], c: 0},
+        {q: "Meaning of 'All at once':", o: ["Slowly", "Suddenly/Unexpectedly", "Daily", "Finally"], c: 1},
+        {q: "Speak, and I am 'all ears'. This means I am:", o: ["Listening attentively", "Deaf", "Running away", "Sleeping"], c: 0},
+        {q: "He was 'all in' after the match. 'All in' means:", o: ["Exhausted/Very tired", "Energetic", "Happy", "Winner"], c: 0},
+        {q: "The maid left the house in 'apple-pie order'. This means:", o: ["Smelling like apples", "Dirty", "Neat and tidy", "Messy"], c: 2},
+        {q: "They were 'armed to the teeth'. This means:", o: ["No weapons", "Heavily armed", "Smiling", "Eating"], c: 1},
+        {q: "The escaped prisoners are still 'at large'. 'At large' means:", o: ["In prison", "Free after an escape", "Captured", "Dead"], c: 1},
+        {q: "He has all the facts 'at his finger tips'. This means they are:", o: ["Lost", "Readily available", "Difficult", "False"], c: 1},
+        {q: "She was completely 'at sea'. This means she was:", o: ["Swimming", "Confused", "Happy", "Strong"], c: 1},
+        {q: "Meaning of 'Back out':", o: ["Keep a promise", "Withdraw from a promise", "Go outside", "Win"], c: 1},
+        {q: "A 'baker's dozen' is the number:", o: ["12", "13", "10", "15"], c: 1},
+        {q: "Meaning of 'Bear in mind':", o: ["Forget", "Remember/Keep in mind", "Carry a bear", "Be afraid"], c: 1},
+        {q: "Don't 'beat about the bush'. This means:", o: ["Go direct", "Delay coming to the point", "Cut the trees", "Run fast"], c: 1},
+        {q: "The thief was put 'behind bars'. This means:", o: ["In a cafe", "In prison", "In the street", "At home"], c: 1},
+        {q: "Your 'better half' usually refers to your:", o: ["Friend", "Wife", "Brother", "Boss"], c: 1},
+        {q: "Ahmed is the 'black sheep' of the family. He has a:", o: ["Good reputation", "Poor reputation", "Black coat", "Lots of sheep"], c: 1},
+        {q: "She decided to 'blot out' his memory. 'Blot out' means:", o: ["Write", "Obliterate/Erase", "Remember", "Draw"], c: 1},
+        {q: "The strong wind 'blew away' the papers. 'Blew away' means:", o: ["Kept", "Carried away", "Cleaned", "Burned"], c: 1},
+        {q: "Don't 'blow your top'! 'Blow one's top' means:", o: ["Wear a hat", "Become exceedingly angry", "Cool down", "Sing"], c: 1},
+        {q: "One of my tires 'blew out'. 'Blow out' here means:", o: ["Inflate", "Burst", "Extinguish", "Fly"], c: 1},
+        {q: "She 'blew out' the candles. 'Blow out' here means:", o: ["Burst", "Extinguish", "Light up", "Buy"], c: 1},
+        {q: "The news was like a 'bolt from the blue'. This means it was:", o: ["Expected", "Unexpected occurrence", "Blue color", "Slow"], c: 1},
+        {q: "Is the train 'bound for' Cairo? 'Bound for' means:", o: ["Coming from", "Going to/Heading to", "Late for", "Stopped at"], c: 1},
+        {q: "This is a 'brand-new' car. 'Brand-new' means:", o: ["Old", "Never used", "Second hand", "Broken"], c: 1},
+        {q: "His joke 'broke the ice'. 'Break the ice' means:", o: ["Freeze", "Promote informality", "Make tea", "Be rude"], c: 1},
+        {q: "Meaning of 'Break one's word':", o: ["Keep a promise", "Fail to do what one promised", "Speak loudly", "Shout"], c: 1},
+        {q: "The car 'broke down'. 'Break down' means:", o: ["Go fast", "Fail to operate", "Look new", "Fly"], c: 1},
+        {q: "A thief 'broke into' the house. 'Break into' means:", o: ["Clean", "Enter by force", "Buy", "Visit"], c: 1},
+        {q: "War 'broke out' in 1939. 'Break out' means:", o: ["Finished", "Occur suddenly", "Wait", "Planned"], c: 1},
+        {q: "The accident was 'brought about' by his carelessness. 'Bring about' means:", o: ["To cause to happen", "To return", "To stop", "To avoid"], c: 0},
+        {q: "He was 'brought up' in Tokyo. 'Bring up' means:", o: ["Raised/Reared", "Educated", "Born", "Travelled"], c: 0},
+        {q: "Meaning of 'Bring to':", o: ["Revive", "Kill", "Carry", "Take away"], c: 0},
+        {q: "You need to 'build up' your vocabulary. 'Build up' means:", o: ["Decrease", "Increase/Make stronger", "Forget", "Hide"], c: 1},
+        {q: "The house 'burned down'. 'Burn down' means:", o: ["Burned to the ground", "Stayed safe", "Was cold", "Built"], c: 0},
+        {q: "Meaning of 'Burn out':", o: ["Work well", "Stop functioning (fuse)", "Light up", "Start"], c: 1},
+        {q: "Jack suddenly 'burst out crying'. 'Burst out' means:", o: ["Begin suddenly", "Stop", "End", "Laugh"], c: 0},
+        {q: "Meaning of 'By heart':", o: ["By mistake", "By memory", "By hand", "By chance"], c: 1},
+        {q: "Jack did the work 'by himself'. 'By oneself' means:", o: ["With help", "Alone", "In a team", "Quickly"], c: 1},
+        {q: "Don't 'call Mary down'. 'Call down' means:", o: ["Call on phone", "Scold/Reprimand", "Help", "Invite"], c: 1},
+        {q: "Meaning of 'About-face':", o: ["Turn in opposite direction", "Smile", "Cry", "Sleep"], c: 0},
+        {q: "If you 'bear out' a story, you:", o: ["Hate it", "Confirm it", "Forget it", "Lie"], c: 1},
+        {q: "He is 'all there'. This means he is:", o: ["Mentally alert", "Crazy", "Absent", "Sleeping"], c: 0},
+        {q: "Meaning of 'By error':", o: ["Correct", "By mistake", "By heart", "By hand"], c: 1}
+    ],
+    "TOEFL Model 1": [
+        {q: "From (1:30) Choose the word that has the same meaning as the CAPITALIZED word.\n\n1. Both BOATS and trains are used for transporting the materials.", o: ["planes", "ships", "canoes", "railroads"], c: 1},
+        {q: "The conference is GOVERNED by its newly elected board.", o: ["ruled", "chosen", "advised", "watched"], c: 0},
+        {q: "ALMOST one half of the world's almonds are produced in California.", o: ["merely", "Entirely", "Nearly", "specifics"], c: 2},
+        {q: "Diffusion occurs at a slower RATE in liquids than in gases.", o: ["percentage", "speed", "time", "amount"], c: 1},
+        {q: "A credit union can DISTRIBUTE earnings to its members as dividends.", o: ["increase", "allocate", "implement", "augment"], c: 1},
+        {q: "Approximately half of American high school graduates enroll in INSTITUTIONS of higher learning.", o: ["buildings", "establishments", "companies", "incidences"], c: 1},
+        {q: "A human body requires more nutrients in cold weather because more energy is necessary to MAINTAIN body temperature.", o: ["surpass", "preserve", "equip", "reach"], c: 1},
+        {q: "The speed of light is used to measure the VAST spaces between stars and planets.", o: ["empty", "huge", "interstellar", "infinite"], c: 1},
+        {q: "There are CONSIDERABLY more weekly newspapers than daily newspapers in the United States.", o: ["mostly", "hardly", "rarely", "substantially"], c: 3},
+        {q: "The largest cactus in the United States is the saguaro cactus, found in the areas SURROUNDING the Gulf of California.", o: ["around", "across", "within", "near"], c: 0},
+        {q: "In the Taft-Hartley Act of 1947, the closed shop became ILLEGAL.", o: ["uncertain", "open", "prohibited", "lawful"], c: 2},
+        {q: "Mental patients are sometimes given the drug chlorpromazine to reduce TENSION.", o: ["stress", "disease", "pain", "awareness"], c: 0},
+        {q: "The cacao tree, from whose seeds chocolate is made, flourishes in HUMID and hot climates.", o: ["temperate", "damp", "horrid", "dry"], c: 1},
+        {q: "The wagonmaster decided to FORD the stream.", o: ["valley", "mountain", "small river", "plain"], c: 2},
+        {q: "A nurse practitioner has training in a SPECIALIZED area of medicine.", o: ["an honorable", "a difficult", "a prescribed", "a distinct"], c: 3},
+        {q: "When in Washington, the U.S. President RESIDES AT the White House.", o: ["returns to", "resists", "lives in", "sides with"], c: 2},
+        {q: "In the United States 60 percent of the milk is PROCESSED into butter, cheese, ice cream, and other dairy products.", o: ["divides", "separated", "mixed", "converted"], c: 3},
+        {q: "Carbon monoxide PREVENTS hemoglobin from supplying oxygen to the body.", o: ["discourages", "distracts", "impedes", "excuses"], c: 2},
+        {q: "Scientists measure the MICROSCOPIC distances between atoms in microns.", o: ["visible", "tiny", "machine-like", "unmeasured"], c: 1},
+        {q: "In the early 1960's many Southern COMMUNITIES were slow to desegregate their public schools.", o: ["establishments", "communes", "states", "neighborhoods"], c: 3},
+        {q: "The Lewis and Clark expedition left St. Louis in 1804 and traveled 7,700 miles ENROUTE TO the Pacific Coast.", o: ["away from", "returning to", "on the way to", "leaving"], c: 2},
+        {q: "Scientists believe that a 400 mile wide meteoric CRATER to the east of Hudson Bay may be the world's largest.", o: ["container", "depression", "locale", "mound"], c: 1},
+        {q: "Exchange rates for most CURRENCIES do not float freely.", o: ["newspapers", "securities", "money", "finances"], c: 2},
+        {q: "Midway Island was ANNEXED by the United States in 1859.", o: ["suppressed", "acquired", "coveted", "obliterated"], c: 1},
+        {q: "The average age of the INHABITANTS is 27.6 years.", o: ["residents", "remains", "visitors", "wayfarers"], c: 0},
+        {q: "He was now in an adjutant's uniform with one EPAULET and a shoulder knot.", o: ["efficient", "costume", "ornament", "expedient"], c: 2},
+        {q: "They have an INSATIABLE thirst for anything made of gold or silver.", o: ["unable to be satisfied", "personal peculiarity", "discomposed", "inert"], c: 0},
+        {q: "After an extremely CONVIVIAL evening, the Thursday morning alarm call came early.", o: ["secret", "feeling of displeasure", "using big words", "festive"], c: 3},
+        {q: "I don't think he feels I'm CULPABLE OF a crime but he knows I'm holding back on him.", o: ["deserving blame", "inclined to believe", "to quicken", "eagerness"], c: 0},
+        {q: "In the back they have more EXOTIC clothing, like Indian saris and the like.", o: ["strange and foreign", "unsymmetrical", "gentle", "continuing a long time"], c: 0},
+
+        // --- PASSAGE 1: ALGAE ---
+        {
+            q: "Algae is a primitive form of life, a single-celled or simple multiple-celled organism that is able to conduct the process of photosynthesis. It is generally found in water but can also be found elsewhere, growing on such surfaces as rocks or trees. The various types of algae are classified according to PIGMENT. BLUE-GREEN ALGAE, or Cyanophyta, can grow at very high temperatures and under high-intensity light. This type of algae is the oldest form of life with photosynthetic capabilities. Fossilized remains of blue-green algae more than 3.4 billion years old have been found in parts of Africa. GREEN ALGAE, or Chlorophyta, is generally found in fresh water. It reproduces on the surfaces of enclosed bodies of water such as ponds or lakes and has the appearance of a fuzzy green coating on the surface of the water. BROWN ALGAE, or Phaeophyta, grows in shallow, temperate water. This type of algae is the largest in size and is most recognizable as a type of seaweed. Its long stalks can be enmeshed on the ocean floor, or it can float freely on the ocean's surface. RED ALGAE, or Rhodophyta, is a small, delicate organism found in the deep waters of the subtropics. This type of algae has an essential role in the formation of coral reefs: it secretes lime from the seawater to foster the formation of limestone deposits.\n\nQuestion: What is the author's main purpose?", 
+            o: ["To show what color algae is", "To differentiate the various classifications of algae", "To describe where algae is found", "To clarify the appearance of different types of algae"], c: 1
+        },
+        {
+            q: "Algae is a primitive form of life, a single-celled or simple multiple-celled organism that is able to conduct the process of photosynthesis. It is generally found in water but can also be found elsewhere, growing on such surfaces as rocks or trees. The various types of algae are classified according to PIGMENT. BLUE-GREEN ALGAE, or Cyanophyta, can grow at very high temperatures and under high-intensity light. This type of algae is the oldest form of life with photosynthetic capabilities. Fossilized remains of blue-green algae more than 3.4 billion years old have been found in parts of Africa. GREEN ALGAE, or Chlorophyta, is generally found in fresh water. It reproduces on the surfaces of enclosed bodies of water such as ponds or lakes and has the appearance of a fuzzy green coating on the surface of the water. BROWN ALGAE, or Phaeophyta, grows in shallow, temperate water. This type of algae is the largest in size and is most recognizable as a type of seaweed. Its long stalks can be enmeshed on the ocean floor, or it can float freely on the ocean's surface. RED ALGAE, or Rhodophyta, is a small, delicate organism found in the deep waters of the subtropics. This type of algae has an essential role in the formation of coral reefs: it secretes lime from the seawater to foster the formation of limestone deposits.\n\nQuestion: Which of the following is NOT true about algae?", 
+            o: ["All types have one cell only.", "It can be found out of water.", "It can use photosynthesis.", "It is not a relatively new form of life."], c: 0
+        },
+        {
+            q: "Algae is a primitive form of life, a single-celled or simple multiple-celled organism that is able to conduct the process of photosynthesis. It is generally found in water but can also be found elsewhere, growing on such surfaces as rocks or trees. The various types of algae are classified according to PIGMENT. BLUE-GREEN ALGAE, or Cyanophyta, can grow at very high temperatures and under high-intensity light. This type of algae is the oldest form of life with photosynthetic capabilities. Fossilized remains of blue-green algae more than 3.4 billion years old have been found in parts of Africa. GREEN ALGAE, or Chlorophyta, is generally found in fresh water. It reproduces on the surfaces of enclosed bodies of water such as ponds or lakes and has the appearance of a fuzzy green coating on the surface of the water. BROWN ALGAE, or Phaeophyta, grows in shallow, temperate water. This type of algae is the largest in size and is most recognizable as a type of seaweed. Its long stalks can be enmeshed on the ocean floor, or it can float freely on the ocean's surface. RED ALGAE, or Rhodophyta, is a small, delicate organism found in the deep waters of the subtropics. This type of algae has an essential role in the formation of coral reefs: it secretes lime from the seawater to foster the formation of limestone deposits.\n\nQuestion: Algae remnants found in Africa are:", 
+            o: ["still flourishing", "photogenic", "extremely old", "red in color"], c: 2
+        },
+        {
+            q: "Algae is a primitive form of life, a single-celled or simple multiple-celled organism that is able to conduct the process of photosynthesis. It is generally found in water but can also be found elsewhere, growing on such surfaces as rocks or trees. The various types of algae are classified according to PIGMENT. BLUE-GREEN ALGAE, or Cyanophyta, can grow at very high temperatures and under high-intensity light. This type of algae is the oldest form of life with photosynthetic capabilities. Fossilized remains of blue-green algae more than 3.4 billion years old have been found in parts of Africa. GREEN ALGAE, or Chlorophyta, is generally found in fresh water. It reproduces on the surfaces of enclosed bodies of water such as ponds or lakes and has the appearance of a fuzzy green coating on the surface of the water. BROWN ALGAE, or Phaeophyta, grows in shallow, temperate water. This type of algae is the largest in size and is most recognizable as a type of seaweed. Its long stalks can be enmeshed on the ocean floor, or it can float freely on the ocean's surface. RED ALGAE, or Rhodophyta, is a small, delicate organism found in the deep waters of the subtropics. This type of algae has an essential role in the formation of coral reefs: it secretes lime from the seawater to foster the formation of limestone deposits.\n\nQuestion: Brown algae would most likely be found:", 
+            o: ["on trees", "near green algae", "on rocks", "in the ocean"], c: 3
+        },
+        {
+            q: "Algae is a primitive form of life, a single-celled or simple multiple-celled organism that is able to conduct the process of photosynthesis. It is generally found in water but can also be found elsewhere, growing on such surfaces as rocks or trees. The various types of algae are classified according to PIGMENT. BLUE-GREEN ALGAE, or Cyanophyta, can grow at very high temperatures and under high-intensity light. This type of algae is the oldest form of life with photosynthetic capabilities. Fossilized remains of blue-green algae more than 3.4 billion years old have been found in parts of Africa. GREEN ALGAE, or Chlorophyta, is generally found in fresh water. It reproduces on the surfaces of enclosed bodies of water such as ponds or lakes and has the appearance of a fuzzy green coating on the surface of the water. BROWN ALGAE, or Phaeophyta, grows in shallow, temperate water. This type of algae is the largest in size and is most recognizable as a type of seaweed. Its long stalks can be enmeshed on the ocean floor, or it can float freely on the ocean's surface. RED ALGAE, or Rhodophyta, is a small, delicate organism found in the deep waters of the subtropics. This type of algae has an essential role in the formation of coral reefs: it secretes lime from the seawater to foster the formation of limestone deposits.\n\nQuestion: It can be inferred from the passage that limestone deposits serve as the basis of:", 
+            o: ["coral reefs", "red algae", "subtropical seawater", "secret passages"], c: 0
+        },
+        {
+            q: "Algae is a primitive form of life, a single-celled or simple multiple-celled organism that is able to conduct the process of photosynthesis. It is generally found in water but can also be found elsewhere, growing on such surfaces as rocks or trees. The various types of algae are classified according to PIGMENT. BLUE-GREEN ALGAE, or Cyanophyta, can grow at very high temperatures and under high-intensity light. This type of algae is the oldest form of life with photosynthetic capabilities. Fossilized remains of blue-green algae more than 3.4 billion years old have been found in parts of Africa. GREEN ALGAE, or Chlorophyta, is generally found in fresh water. It reproduces on the surfaces of enclosed bodies of water such as ponds or lakes and has the appearance of a fuzzy green coating on the surface of the water. BROWN ALGAE, or Phaeophyta, grows in shallow, temperate water. This type of algae is the largest in size and is most recognizable as a type of seaweed. Its long stalks can be enmeshed on the ocean floor, or it can float freely on the ocean's surface. RED ALGAE, or Rhodophyta, is a small, delicate organism found in the deep waters of the subtropics. This type of algae has an essential role in the formation of coral reefs: it secretes lime from the seawater to foster the formation of limestone deposits.\n\nQuestion: According to the passage, red algae is:", 
+            o: ["sturdy", "huge", "fragile", "found in shallow water"], c: 2
+        },
+
+        // --- PASSAGE 2: SAMUEL MORSE ---
+        {
+            q: "Samuel Morse ACCOMPLISHED something that is rarely accomplished: he achieved fame and success in two widely differing areas. Throughout his youth he studied art, and after graduating from Yale University he went on to London in 1811 where his early artistic endeavors met with acclaim. In London he was awarded the gold medal of the Adelphi Arts Society for a clay figure of Hercules, and his paintings THE DYING HERCULES and THE JUDGMENT OF JUPITER were selected for exhibit by the Royal Academy. Later in life, after returning to America, Morse became known for his portraits. His portraits of the MARQUIS DE LAFAYETTE today are on exhibit in the New York City Hall and the New York Public Library. In addition to his artistic accomplishments, Morse is also well-known today for his work developing the TELEGRAPH and what is known as MORSE CODE. He first had the idea of trying to develop the telegraph in 1832, on board a ship returning to America from Europe. It took eleven long years of ridicule by his associates, disinterest by the public, and a shortage of funds before Congress finally allocated $30,000 to Morse for his project. With these funds, Morse hung a telegraph line from Washington, D.C. to Baltimore, and on May 24, 1844, a message in the dots and dashes of Morse Code was successfully transmitted.\n\nQuestion: Which of the following is the best topic for this passage?", 
+            o: ["Samuel Morse's artistic talents", "The use of Morse Code in art", "The invention of the telegraph", "Samuel Morse's varied successes"], c: 3
+        },
+        {
+            q: "Samuel Morse ACCOMPLISHED something that is rarely accomplished: he achieved fame and success in two widely differing areas. Throughout his youth he studied art, and after graduating from Yale University he went on to London in 1811 where his early artistic endeavors met with acclaim. In London he was awarded the gold medal of the Adelphi Arts Society for a clay figure of Hercules, and his paintings THE DYING HERCULES and THE JUDGMENT OF JUPITER were selected for exhibit by the Royal Academy. Later in life, after returning to America, Morse became known for his portraits. His portraits of the MARQUIS DE LAFAYETTE today are on exhibit in the New York City Hall and the New York Public Library. In addition to his artistic accomplishments, Morse is also well-known today for his work developing the TELEGRAPH and what is known as MORSE CODE. He first had the idea of trying to develop the telegraph in 1832, on board a ship returning to America from Europe. It took eleven long years of ridicule by his associates, disinterest by the public, and a shortage of funds before Congress finally allocated $30,000 to Morse for his project. With these funds, Morse hung a telegraph line from Washington, D.C. to Baltimore, and on May 24, 1844, a message in the dots and dashes of Morse Code was successfully transmitted.\n\nQuestion: According to the passage, in his early life, Morse concentrated on preparing for which of the following careers?", 
+            o: ["A career as an inventor", "A career as an artist", "A career as a telegraph operator", "A career developing Morse Code"], c: 1
+        },
+        {
+            q: "Samuel Morse ACCOMPLISHED something that is rarely accomplished: he achieved fame and success in two widely differing areas. Throughout his youth he studied art, and after graduating from Yale University he went on to London in 1811 where his early artistic endeavors met with acclaim. In London he was awarded the gold medal of the Adelphi Arts Society for a clay figure of Hercules, and his paintings THE DYING HERCULES and THE JUDGMENT OF JUPITER were selected for exhibit by the Royal Academy. Later in life, after returning to America, Morse became known for his portraits. His portraits of the MARQUIS DE LAFAYETTE today are on exhibit in the New York City Hall and the New York Public Library. In addition to his artistic accomplishments, Morse is also well-known today for his work developing the TELEGRAPH and what is known as MORSE CODE. He first had the idea of trying to develop the telegraph in 1832, on board a ship returning to America from Europe. It took eleven long years of ridicule by his associates, disinterest by the public, and a shortage of funds before Congress finally allocated $30,000 to Morse for his project. With these funds, Morse hung a telegraph line from Washington, D.C. to Baltimore, and on May 24, 1844, a message in the dots and dashes of Morse Code was successfully transmitted.\n\nQuestion: According to the passage, Morse won a prize for which of the following works?", 
+            o: ["A statue of Hercules", "The Dying Hercules", "The Judgment of Jupiter", "A portrait of Lafayette"], c: 0
+        },
+        {
+            q: "Samuel Morse ACCOMPLISHED something that is rarely accomplished: he achieved fame and success in two widely differing areas. Throughout his youth he studied art, and after graduating from Yale University he went on to London in 1811 where his early artistic endeavors met with acclaim. In London he was awarded the gold medal of the Adelphi Arts Society for a clay figure of Hercules, and his paintings THE DYING HERCULES and THE JUDGMENT OF JUPITER were selected for exhibit by the Royal Academy. Later in life, after returning to America, Morse became known for his portraits. His portraits of the MARQUIS DE LAFAYETTE today are on exhibit in the New York City Hall and the New York Public Library. In addition to his artistic accomplishments, Morse is also well-known today for his work developing the TELEGRAPH and what is known as MORSE CODE. He first had the idea of trying to develop the telegraph in 1832, on board a ship returning to America from Europe. It took eleven long years of ridicule by his associates, disinterest by the public, and a shortage of funds before Congress finally allocated $30,000 to Morse for his project. With these funds, Morse hung a telegraph line from Washington, D.C. to Baltimore, and on May 24, 1844, a message in the dots and dashes of Morse Code was successfully transmitted.\n\nQuestion: According to the passage, which of the following best describes the development of the telegraph?", 
+            o: ["It was a long and difficult process.", "It happened almost overnight.", "Morse's friends were highly supportive.", "Money was not an issue."], c: 0
+        },
+        {
+            q: "Samuel Morse ACCOMPLISHED something that is rarely accomplished: he achieved fame and success in two widely differing areas. Throughout his youth he studied art, and after graduating from Yale University he went on to London in 1811 where his early artistic endeavors met with acclaim. In London he was awarded the gold medal of the Adelphi Arts Society for a clay figure of Hercules, and his paintings THE DYING HERCULES and THE JUDGMENT OF JUPITER were selected for exhibit by the Royal Academy. Later in life, after returning to America, Morse became known for his portraits. His portraits of the MARQUIS DE LAFAYETTE today are on exhibit in the New York City Hall and the New York Public Library. In addition to his artistic accomplishments, Morse is also well-known today for his work developing the TELEGRAPH and what is known as MORSE CODE. He first had the idea of trying to develop the telegraph in 1832, on board a ship returning to America from Europe. It took eleven long years of ridicule by his associates, disinterest by the public, and a shortage of funds before Congress finally allocated $30,000 to Morse for his project. With these funds, Morse hung a telegraph line from Washington, D.C. to Baltimore, and on May 24, 1844, a message in the dots and dashes of Morse Code was successfully transmitted.\n\nQuestion: How was the first telegraph message sent from Washington to Baltimore?", 
+            o: ["A voice was transmitted", "The telegraph line carried a written message", "The message was in a special code developed by Morse", "Funds were transmitted"], c: 2
+        },
+        {
+            q: "Samuel Morse ACCOMPLISHED something that is rarely accomplished: he achieved fame and success in two widely differing areas. Throughout his youth he studied art, and after graduating from Yale University he went on to London in 1811 where his early artistic endeavors met with acclaim. In London he was awarded the gold medal of the Adelphi Arts Society for a clay figure of Hercules, and his paintings THE DYING HERCULES and THE JUDGMENT OF JUPITER were selected for exhibit by the Royal Academy. Later in life, after returning to America, Morse became known for his portraits. His portraits of the MARQUIS DE LAFAYETTE today are on exhibit in the New York City Hall and the New York Public Library. In addition to his artistic accomplishments, Morse is also well-known today for his work developing the TELEGRAPH and what is known as MORSE CODE. He first had the idea of trying to develop the telegraph in 1832, on board a ship returning to America from Europe. It took eleven long years of ridicule by his associates, disinterest by the public, and a shortage of funds before Congress finally allocated $30,000 to Morse for his project. With these funds, Morse hung a telegraph line from Washington, D.C. to Baltimore, and on May 24, 1844, a message in the dots and dashes of Morse Code was successfully transmitted.\n\nQuestion: What does the word 'accomplished' mean?", 
+            o: ["succeeded", "managed", "failed", "achieved"], c: 3
+        },
+
+        // --- PASSAGE 3: California ---
+        {
+            q: "Geographically, California's diversity is BREATHTAKING, and the state's coastline from north to south is no exception. Measuring 840 MILES in length, the coast consists of the rugged cliffs of the COAST RANGES in the north and wide sandy beaches in the south. Along the coastline there are two major harbors, one in the north at SAN FRANCISCO, the other in the south at SAN DIEGO. Near HUMBOLDT and MONTEREY are smaller natural harbors.\n\nQuestion: The topic of the passage is:", 
+            o: ["how the state of California is divided", "the exceptions in coastal geography", "the breathtaking beauty of California", "the variations in California's costal geography"], c: 3
+        },
+        {
+            q: "Geographically, California's diversity is BREATHTAKING, and the state's coastline from north to south is no exception. Measuring 840 MILES in length, the coast consists of the rugged cliffs of the COAST RANGES in the north and wide sandy beaches in the south. Along the coastline there are two major harbors, one in the north at SAN FRANCISCO, the other in the south at SAN DIEGO. Near HUMBOLDT and MONTEREY are smaller natural harbors.\n\nQuestion: According to the passage, what measures 840 miles in length?", 
+            o: ["The California coastline", "The Coast Ranges", "The rugged cliffs", "Northern California"], c: 0
+        },
+        {
+            q: "Geographically, California's diversity is BREATHTAKING, and the state's coastline from north to south is no exception. Measuring 840 MILES in length, the coast consists of the rugged cliffs of the COAST RANGES in the north and wide sandy beaches in the south. Along the coastline there are two major harbors, one in the north at SAN FRANCISCO, the other in the south at SAN DIEGO. Near HUMBOLDT and MONTEREY are smaller natural harbors.\n\nQuestion: The Coast Ranges are:", 
+            o: ["flat, sandy areas", "found in southern California", "a series of mountains", "hundreds of miles north of the cliffs"], c: 2
+        },
+        {
+            q: "Geographically, California's diversity is BREATHTAKING, and the state's coastline from north to south is no exception. Measuring 840 MILES in length, the coast consists of the rugged cliffs of the COAST RANGES in the north and wide sandy beaches in the south. Along the coastline there are two major harbors, one in the north at SAN FRANCISCO, the other in the south at SAN DIEGO. Near HUMBOLDT and MONTEREY are smaller natural harbors.\n\nQuestion: It is implied in the passage that northern California:", 
+            o: ["has more beaches", "is roughly the same", "has fewer major harbors", "has a substantially different coastline"], c: 3
+        },
+        {
+            q: "Geographically, California's diversity is BREATHTAKING, and the state's coastline from north to south is no exception. Measuring 840 MILES in length, the coast consists of the rugged cliffs of the COAST RANGES in the north and wide sandy beaches in the south. Along the coastline there are two major harbors, one in the north at SAN FRANCISCO, the other in the south at SAN DIEGO. Near HUMBOLDT and MONTEREY are smaller natural harbors.\n\nQuestion: According to the passage, where are the major harbors located in California?", 
+            o: ["In San Diego", "Only in northern California", "Near Humboldt", "In the north and in the south"], c: 3
+        },
+        {
+            q: "Geographically, California's diversity is BREATHTAKING, and the state's coastline from north to south is no exception. Measuring 840 MILES in length, the coast consists of the rugged cliffs of the COAST RANGES in the north and wide sandy beaches in the south. Along the coastline there are two major harbors, one in the north at SAN FRANCISCO, the other in the south at SAN DIEGO. Near HUMBOLDT and MONTEREY are smaller natural harbors.\n\nQuestion: What does the word 'breathtaking' mean?", 
+            o: ["exciting", "vague", "terrifying", "mysterious"], c: 0
+        },
+
+        // --- PASSAGE 4: BIOFEEDBACK ---
+        {
+            q: "Biofeedback is on the verge of becoming an important tool in medical therapy. Using biofeedback, a patient can learn to control certain body systems, such as heartbeat, temperature, or blood pressure, that are normally AUTONOMIC or self-regulating. The patient is attached to a machine measuring the function he wishes to control. When the desired result is achieved, the patient hears a STEADY TONE. Today researchers are using biofeedback to treat patients with such MALADIES as irregular heartbeat, migraine headaches, and high blood pressure. The medical community FORESEES myriad applications in the future.\n\nQuestion: The main purpose of this passage is to:", 
+            o: ["describe a medical technique used extensively", "describe a new, potentially helpful medical treatment", "teach patients how to use machines", "explain how to control heartbeat"], c: 1
+        },
+        {
+            q: "Biofeedback is on the verge of becoming an important tool in medical therapy. Using biofeedback, a patient can learn to control certain body systems, such as heartbeat, temperature, or blood pressure, that are normally AUTONOMIC or self-regulating. The patient is attached to a machine measuring the function he wishes to control. When the desired result is achieved, the patient hears a STEADY TONE. Today researchers are using biofeedback to treat patients with such MALADIES as irregular heartbeat, migraine headaches, and high blood pressure. The medical community FORESEES myriad applications in the future.\n\nQuestion: According to the passage, what is an autonomic body process?", 
+            o: ["Self-controlling", "Usual", "Consciously regulated", "Disorganized"], c: 0
+        },
+        {
+            q: "Biofeedback is on the verge of becoming an important tool in medical therapy. Using biofeedback, a patient can learn to control certain body systems, such as heartbeat, temperature, or blood pressure, that are normally AUTONOMIC or self-regulating. The patient is attached to a machine measuring the function he wishes to control. When the desired result is achieved, the patient hears a STEADY TONE. Today researchers are using biofeedback to treat patients with such MALADIES as irregular heartbeat, migraine headaches, and high blood pressure. The medical community FORESEES myriad applications in the future.\n\nQuestion: How does a patient know that he has achieved a desired result?", 
+            o: ["The machine records results", "He hears a sound", "The machine monitors process", "Doctor gives reward"], c: 1
+        },
+        {
+            q: "Biofeedback is on the verge of becoming an important tool in medical therapy. Using biofeedback, a patient can learn to control certain body systems, such as heartbeat, temperature, or blood pressure, that are normally AUTONOMIC or self-regulating. The patient is attached to a machine measuring the function he wishes to control. When the desired result is achieved, the patient hears a STEADY TONE. Today researchers are using biofeedback to treat patients with such MALADIES as irregular heartbeat, migraine headaches, and high blood pressure. The medical community FORESEES myriad applications in the future.\n\nQuestion: What do medical authorities see in the future for biofeedback?", 
+            o: ["Decreased implementation", "Numerous problems", "Many different uses", "Rejection by community"], c: 2
+        },
+        {
+            q: "Biofeedback is on the verge of becoming an important tool in medical therapy. Using biofeedback, a patient can learn to control certain body systems, such as heartbeat, temperature, or blood pressure, that are normally AUTONOMIC or self-regulating. The patient is attached to a machine measuring the function he wishes to control. When the desired result is achieved, the patient hears a STEADY TONE. Today researchers are using biofeedback to treat patients with such MALADIES as irregular heartbeat, migraine headaches, and high blood pressure. The medical community FORESEES myriad applications in the future.\n\nQuestion: Which of the following medical problems would probably NOT be treated by biofeedback?", 
+            o: ["A tension headache", "Fever", "Irregular heart rhythm", "A broken leg"], c: 3
+        },
+        {
+            q: "Biofeedback is on the verge of becoming an important tool in medical therapy. Using biofeedback, a patient can learn to control certain body systems, such as heartbeat, temperature, or blood pressure, that are normally AUTONOMIC or self-regulating. The patient is attached to a machine measuring the function he wishes to control. When the desired result is achieved, the patient hears a STEADY TONE. Today researchers are using biofeedback to treat patients with such MALADIES as irregular heartbeat, migraine headaches, and high blood pressure. The medical community FORESEES myriad applications in the future.\n\nQuestion: What does the word 'foresees' mean?", 
+            o: ["anticipates", "amazed", "aggravated", "Detached"], c: 0
+        },
+        // --- PASSAGE 5: NIAGARA FALLS ---
+        {
+            q: "Niagara Falls, one of the most famous North American natural wonders, has long been a popular tourist DESTINATION. Tourists today flock to see the two falls: the HORSESHOE FALLS on the Canadian side and the AMERICAN FALLS on the U.S. side. Visitors come between April and October to take a STEAMER out on to the river. In 1885 New York created NIAGARA FALLS PARK, and Canada created QUEEN VICTORIA PARK to protect the land.\n\nQuestion: Which best describes Niagara Falls?", 
+            o: ["Niagara Falls consists of two rivers", "American Falls is higher", "The Niagara River has two falls, one in Canada and one U.S.", "The falls are only in the U.S."], c: 2
+        },
+        {
+            q: "Niagara Falls, one of the most famous North American natural wonders, has long been a popular tourist DESTINATION. Tourists today flock to see the two falls: the HORSESHOE FALLS on the Canadian side and the AMERICAN FALLS on the U.S. side. Visitors come between April and October to take a STEAMER out on to the river. In 1885 New York created NIAGARA FALLS PARK, and Canada created QUEEN VICTORIA PARK to protect the land.\n\nQuestion: The passage implies that tourists prefer:", 
+            o: ["to visit Niagara Falls during warmer weather", "to see the falls from a great distance", "to take a ride over the falls", "to come for a winter vacation"], c: 0
+        },
+        {
+            q: "Niagara Falls, one of the most famous North American natural wonders, has long been a popular tourist DESTINATION. Tourists today flock to see the two falls: the HORSESHOE FALLS on the Canadian side and the AMERICAN FALLS on the U.S. side. Visitors come between April and October to take a STEAMER out on to the river. In 1885 New York created NIAGARA FALLS PARK, and Canada created QUEEN VICTORIA PARK to protect the land.\n\nQuestion: What is a 'steamer'?", 
+            o: ["A bus", "A boat", "A walkway", "A park"], c: 1
+        },
+        {
+            q: "Niagara Falls, one of the most famous North American natural wonders, has long been a popular tourist DESTINATION. Tourists today flock to see the two falls: the HORSESHOE FALLS on the Canadian side and the AMERICAN FALLS on the U.S. side. Visitors come between April and October to take a STEAMER out on to the river. In 1885 New York created NIAGARA FALLS PARK, and Canada created QUEEN VICTORIA PARK to protect the land.\n\nQuestion: According to the passage, why was Niagara Park created?", 
+            o: ["To encourage tourists", "To show off beauty", "To protect the area", "To force Canada to open park"], c: 2
+        },
+        {
+            q: "Niagara Falls, one of the most famous North American natural wonders, has long been a popular tourist DESTINATION. Tourists today flock to see the two falls: the HORSESHOE FALLS on the Canadian side and the AMERICAN FALLS on the U.S. side. Visitors come between April and October to take a STEAMER out on to the river. In 1885 New York created NIAGARA FALLS PARK, and Canada created QUEEN VICTORIA PARK to protect the land.\n\nQuestion: What is the major point the author is making in this passage?", 
+            o: ["View from either side", "Trip isn't complete", "Interesting history", "Necessary to protect from tourists"], c: 3
+        },
+        {
+            q: "Niagara Falls, one of the most famous North American natural wonders, has long been a popular tourist DESTINATION. Tourists today flock to see the two falls: the HORSESHOE FALLS on the Canadian side and the AMERICAN FALLS on the U.S. side. Visitors come between April and October to take a STEAMER out on to the river. In 1885 New York created NIAGARA FALLS PARK, and Canada created QUEEN VICTORIA PARK to protect the land.\n\nQuestion: The word 'destination' is closest in meaning to:", 
+            o: ["feeling", "kind", "field", "landing place"], c: 3
+        }
+    ],
+    
+};
+
+let currentQuestions = [];
+let currentExamName = "";
+let i=0, answers=[], startTime;
+
+function initExams() {
+    let listHTML = "";
+    for (let examName in allExams) {
+        let qCount = allExams[examName].length; 
+        listHTML += `
+            <button class="exam-btn" onclick="startExam('${examName}')">
+                <span>${examName}</span>
+                <span>(${qCount} questions)</span>
+            </button>`;
+    }
+    document.getElementById("examsList").innerHTML = listHTML;
+}
+initExams();
+
+function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id=="scores") loadScores();
+}
+
+function startExam(examName){
+    currentExamName = examName;
+    currentQuestions = allExams[examName];
+    i=0; 
+    answers=[]; 
+    startTime=Date.now();
+    document.getElementById("examTitle").innerText = examName;
+    showPage('examPage'); 
+    render();
+}
+
+function render(){
+    let q = currentQuestions[i];
+    document.getElementById("qText").innerText = (i+1) + ". " + q.q;
+    let ops = "";
+    q.o.forEach((op, idx) => {
+        ops += `<div class="option ${answers[i]===idx?'selected':''}" onclick="select(${idx})">${op}</div>`;
+    });
+    document.getElementById("options").innerHTML = ops;
+    document.getElementById("nextBtn").innerText = (i === currentQuestions.length - 1) ? "Finish ✓" : "Next ➡";
+}
+
+function select(x){
+    answers[i] = x;
+    render();
+}
+
+function next(){
+    if(i < currentQuestions.length - 1){
+        i++;
+        render();
+    } else {
+        finish();
+    }
+}
+
+function prev(){
+    if(i > 0){
+        i--;
+        render();
+    }
+}
+
+function finish(){
+    let score = 0;
+    let reviewHTML = "";
+
+    currentQuestions.forEach((q, idx) => {
+        let userAnswer = answers[idx];
+        let correct = userAnswer === q.c;
+        if(correct) score++;
+
+        reviewHTML += `
+        <div class="review-item" style="background:${correct?'#dcfce7':'#fee2e2'}">
+            <p><strong>Q${idx+1}:</strong> ${q.q}</p>
+            <p><strong>Your answer:</strong> ${userAnswer !== undefined ? q.o[userAnswer] : "No answer"}</p>
+            ${correct ? `<p style="color:green"><strong>✔ Correct</strong></p>` : 
+            `<p style="color:red"><strong>✘ Wrong</strong><br><strong>Correct:</strong> ${q.o[q.c]}</p>`}
+        </div>`;
+    });
+
+    let percent = Math.round((score / currentQuestions.length) * 100);
+    let time = Math.round((Date.now() - startTime) / 1000);
+
+    let record = {
+        exam: currentExamName,
+        score: score,
+        total: currentQuestions.length,
+        percent: percent,
+        time: time,
+        date: new Date().toLocaleDateString()
+    };
+
+    let history = JSON.parse(localStorage.getItem("scores") || "[]");
+    let existingIdx = history.findIndex(h => h.exam === currentExamName);
+    if(existingIdx !== -1) history[existingIdx] = record;
+    else history.push(record);
+    
+    localStorage.setItem("scores", JSON.stringify(history));
+
+    document.getElementById("scoreText").innerText = score + " / " + currentQuestions.length;
+    document.getElementById("details").innerText = percent + "% correct • Time: " + time + "s";
+    document.getElementById("review").innerHTML = reviewHTML;
+    showPage('result');
+}
+
+function loadScores(){
+    let history = JSON.parse(localStorage.getItem("scores") || "[]");
+    let html = history.length ? history.map(s => 
+        `<div style="border-bottom:1px solid #eee; padding:10px 0;">
+            <strong>${s.exam}</strong>: ${s.score}/${s.total} (${s.percent}%) <br>
+            <small style="color:#666">Date: ${s.date} | Time: ${s.time}s</small>
+        </div>`
+    ).join("") : "No exams taken yet.";
+    document.getElementById("scoreList").innerHTML = html;
+}
+
+function clearScores(){
+    if(confirm("Clear all your progress?")){
+        localStorage.removeItem("scores");
+        loadScores();
+    }
+}
+</script>
+
+</body>
+</html>
